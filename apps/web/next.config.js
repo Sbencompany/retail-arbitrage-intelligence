@@ -1,21 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  experimental: {
+    appDir: true,
+  },
   images: {
-    domains: ['m.media-amazon.com', 'i.ebayimg.com', 'images.walmart.com', 'pisces.bbystatic.com', 'upload.wikimedia.org'],
+    domains: ['images.unsplash.com', 'via.placeholder.com'],
   },
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/v1',
-    NEXT_PUBLIC_APP_NAME: 'Retail Arbitrage Intelligence',
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://api.example.com',
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/v1'}/:path*`,
-      },
-    ];
-  },
-};
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
