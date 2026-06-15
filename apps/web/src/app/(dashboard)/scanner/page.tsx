@@ -218,7 +218,7 @@ function Img({src,alt,cls}:{src:string;alt:string;cls:string}) {
   const [err,setErr] = useState(false);
   if(err) return (
     <div className={cls+' bg-slate-700/50 flex flex-col items-center justify-center rounded-xl border border-slate-600/50'}>
-      <span className="text-xl">📦</span>
+      <span className="text-xl">ð¦</span>
       <span className="text-slate-500 text-xs mt-1">No img</span>
     </div>
   );
@@ -229,7 +229,7 @@ function ROIBadge({roi,profit}:{roi:number;profit:number}) {
   const pos = profit > 0;
   return (
     <div className={'flex-shrink-0 min-w-[100px] text-right px-4 py-3 rounded-xl border '+(pos?'bg-emerald-900/25 border-emerald-500/35':'bg-red-900/25 border-red-500/35')}>
-      <div className={'text-xl font-extrabold '+(pos?'text-emerald-400':'text-red-400')}>{profit>=0?'+':''}${Math.abs(profit).toFixed(2)}{profit<0?'':''}</div>
+      <div className={'text-xl font-extrabold '+(pos?'text-emerald-400':'text-red-400')}>{profit>=0?'+':'-'}${Math.abs(profit).toFixed(2)}</div>
       <div className={'text-sm font-bold '+(roi>0?'text-emerald-300':'text-red-400')}>ROI {roi.toFixed(0)}%</div>
     </div>
   );
@@ -289,7 +289,7 @@ export default function ScannerPage() {
   };
 
   const mktLabel: Record<string,string> = {amazon:'Amazon',ebay:'eBay',walmart:'Walmart Mkt'};
-  const mktIcon: Record<string,string>  = {amazon:'🟠',ebay:'🔴',walmart:'🔵'};
+  const mktIcon: Record<string,string>  = {amazon:'ð ',ebay:'ð´',walmart:'ðµ'};
   const mkActive: Record<string,string> = {
     amazon:'bg-orange-500/20 border-orange-400 text-orange-300',
     ebay:  'bg-red-500/20 border-red-400 text-red-300',
@@ -313,24 +313,24 @@ export default function ScannerPage() {
           <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
             <div>
               <div className="flex items-center gap-3 mb-1">
-                <span className="text-2xl">📡</span>
+                <span className="text-2xl">ð¡</span>
                 <h1 className="text-2xl font-extrabold text-white">Scanner de Deals</h1>
-                <span className="px-2.5 py-0.5 bg-blue-600 text-white text-xs font-bold rounded-full">LOJAS FÍSICAS</span>
+                <span className="px-2.5 py-0.5 bg-blue-600 text-white text-xs font-bold rounded-full">LOJAS FÃSICAS</span>
               </div>
-              <p className="text-slate-400 text-sm">Compre barato em lojas físicas · Venda com lucro · Compare pelo <span className="text-blue-400 font-semibold">mesmo UPC</span></p>
+              <p className="text-slate-400 text-sm">Compre barato em lojas fÃ­sicas Â· Venda com lucro Â· Compare pelo <span className="text-blue-400 font-semibold">mesmo UPC</span></p>
             </div>
             <button onClick={handleScan} disabled={scanning}
               className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold rounded-xl shadow transition">
-              {scanning?'⏳':'🔍'} {scanning?'Escaneando '+progress+'%':'Escanear Agora'}
+              {scanning?'â³':'ð'} {scanning?'Escaneando '+progress+'%':'Escanear Agora'}
             </button>
           </div>
           {scanning&&<div className="w-full bg-slate-700 rounded-full h-1.5 mb-4"><div className="bg-blue-500 h-1.5 rounded-full transition-all" style={{width:progress+'%'}}/></div>}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {([
-              {icon:'📦',label:'Produtos',val:filtered.length,suf:'',c:'text-blue-400'},
-              {icon:'✅',label:'Com Lucro',val:profitable,suf:'',c:'text-emerald-400'},
-              {icon:'📈',label:'ROI Médio',val:avgROI,suf:'%',c:'text-yellow-400'},
-              {icon:'🏪',label:'Lojas',val:STORES.length-1,suf:'',c:'text-purple-400'},
+              {icon:'ð¦',label:'Produtos',val:filtered.length,suf:'',c:'text-blue-400'},
+              {icon:'â',label:'Com Lucro',val:profitable,suf:'',c:'text-emerald-400'},
+              {icon:'ð',label:'ROI MÃ©dio',val:avgROI,suf:'%',c:'text-yellow-400'},
+              {icon:'ðª',label:'Lojas',val:STORES.length-1,suf:'',c:'text-purple-400'},
             ] as const).map(k=>(
               <div key={k.label} className="bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-3 flex items-center gap-3">
                 <span className="text-xl">{k.icon}</span>
@@ -345,43 +345,43 @@ export default function ScannerPage() {
         <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-4 mb-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 mb-3">
             <div className="lg:col-span-2 relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">🔎</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">ð</span>
               <input type="text" placeholder="Produto, marca ou UPC..." value={search} onChange={e=>setSearch(e.target.value)}
                 className="w-full bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-xl pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
             </div>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-sm">🏷️</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-sm">ð·ï¸</span>
               <select value={category} onChange={e=>setCategory(e.target.value)}
                 className="w-full appearance-none bg-slate-700 border border-slate-600 text-white rounded-xl pl-9 pr-7 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
                 {CATEGORIES.map((c:string)=><option key={c} value={c} style={{backgroundColor:'#1e293b'}}>{c}</option>)}
               </select>
-              <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs">▼</span>
+              <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs">â¼</span>
             </div>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-sm">🏪</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-sm">ðª</span>
               <select value={store} onChange={e=>setStore(e.target.value)}
                 className="w-full appearance-none bg-slate-700 border border-slate-600 text-white rounded-xl pl-9 pr-7 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
                 {STORES.map((s:string)=><option key={s} value={s} style={{backgroundColor:'#1e293b'}}>{s}</option>)}
               </select>
-              <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs">▼</span>
+              <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs">â¼</span>
             </div>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-sm">🏷</span>
-              <input type="number" min={0} max={90} placeholder="Desc % ≥" value={minDisc||''} onChange={e=>setMinDisc(Number(e.target.value)||0)}
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-sm">ð·</span>
+              <input type="number" min={0} max={90} placeholder="Desc % â¥" value={minDisc||''} onChange={e=>setMinDisc(Number(e.target.value)||0)}
                 className="w-full bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-xl pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
             </div>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-sm">📊</span>
-              <input type="number" min={0} max={500} placeholder="ROI % ≥" value={minROI||''} onChange={e=>setMinROI(Number(e.target.value)||0)}
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-sm">ð</span>
+              <input type="number" min={0} max={500} placeholder="ROI % â¥" value={minROI||''} onChange={e=>setMinROI(Number(e.target.value)||0)}
                 className="w-full bg-slate-700 border border-slate-600 text-white placeholder-slate-400 rounded-xl pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"/>
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
             {([
-              ['⭐ ROI 50%+',()=>setMinROI(50)],['🏷️ Desc 40%+',()=>setMinDisc(40)],
-              ['🍳 Kitchen',()=>setCategory('Kitchen')],['🔧 Tools',()=>setCategory('Tools')],
-              ['💊 Health',()=>setCategory('Health')],['🏠 Home',()=>setCategory('Home')],
-              ['🔄 Limpar',()=>{setSearch('');setCategory('Todos');setStore('Todas');setMinDisc(0);setMinROI(0);}],
+              ['â­ ROI 50%+',()=>setMinROI(50)],['ð·ï¸ Desc 40%+',()=>setMinDisc(40)],
+              ['ð³ Kitchen',()=>setCategory('Kitchen')],['ð§ Tools',()=>setCategory('Tools')],
+              ['ð Health',()=>setCategory('Health')],['ð  Home',()=>setCategory('Home')],
+              ['ð Limpar',()=>{setSearch('');setCategory('Todos');setStore('Todas');setMinDisc(0);setMinROI(0);}],
             ] as [string,()=>void][]).map(([l,fn])=>(
               <button key={l} onClick={fn} className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 hover:text-white text-xs rounded-lg transition font-medium">{l}</button>
             ))}
@@ -389,7 +389,7 @@ export default function ScannerPage() {
         </div>
 
         <div className="flex items-center gap-3 mb-4 flex-wrap">
-          <span className="text-slate-400 text-sm font-medium">Ver preços em:</span>
+          <span className="text-slate-400 text-sm font-medium">Ver preÃ§os em:</span>
           {['amazon','ebay','walmart'].map(m=>(
             <button key={m} onClick={()=>setMkt(m)}
               className={'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold border-2 transition '+(mkt===m?mkActive[m]:'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500')}>
@@ -402,7 +402,7 @@ export default function ScannerPage() {
         <div className="space-y-3">
           {filtered.length===0&&(
             <div className="text-center py-20 bg-slate-800/40 rounded-2xl border border-slate-700">
-              <div className="text-5xl mb-4">🔍</div>
+              <div className="text-5xl mb-4">ð</div>
               <p className="text-white font-bold text-lg">Nenhum produto encontrado</p>
               <p className="text-slate-400 text-sm mt-1">Ajuste os filtros para ver mais produtos</p>
             </div>
@@ -430,14 +430,14 @@ export default function ScannerPage() {
                       <div className="flex items-center gap-2 flex-wrap mb-1.5">
                         <span className={'px-2 py-0.5 rounded-lg text-xs font-extrabold '+bdg[0]+' '+bdg[1]}>{p.badge}</span>
                         <code className="text-xs text-slate-400 bg-slate-800 border border-slate-700 px-2 py-0.5 rounded-lg font-mono">UPC: {p.upc}</code>
-                        {bk===mkt&&<span className="px-2 py-0.5 bg-yellow-500/20 border border-yellow-500/40 text-yellow-400 text-xs font-bold rounded-lg">⭐ Melhor Mkt</span>}
+                        {bk===mkt&&<span className="px-2 py-0.5 bg-yellow-500/20 border border-yellow-500/40 text-yellow-400 text-xs font-bold rounded-lg">â­ Melhor Mkt</span>}
                       </div>
                       <h3 className="font-bold text-white text-sm leading-snug">{p.name}</h3>
                       <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1.5 text-xs">
-                        <span className="text-slate-300">🏷️ <strong className="text-emerald-400">${p.buy}</strong> <span className="line-through text-slate-500">${p.orig}</span> <span className="text-red-400 font-bold">-{p.disc}%</span></span>
+                        <span className="text-slate-300">ð·ï¸ <strong className="text-emerald-400">${p.buy}</strong> <span className="line-through text-slate-500">${p.orig}</span> <span className="text-red-400 font-bold">-{p.disc}%</span></span>
                         <span className="text-slate-300">{mktIcon[mkt]} <strong className="text-blue-300">${mktSrc.price.toFixed(2)}</strong></span>
-                        <span className="text-slate-500">📊 {p.monthly.toLocaleString()}/mês</span>
-                        <span className="text-slate-500">📦 {p.avail} unid.</span>
+                        <span className="text-slate-500">ð {p.monthly.toLocaleString()}/mÃªs</span>
+                        <span className="text-slate-500">ð¦ {p.avail} unid.</span>
                       </div>
                     </div>
                     <ROIBadge roi={mktCalc.roi} profit={mktCalc.profit}/>
@@ -447,14 +447,14 @@ export default function ScannerPage() {
                 {isE&&(
                   <div className="border-t border-slate-700 bg-slate-900/60 p-5">
                     <div className="flex items-center gap-3 mb-5 p-3 bg-blue-900/20 border border-blue-700/30 rounded-xl">
-                      <span className="text-blue-400 font-bold text-sm">🔍 Comparando pelo mesmo UPC:</span>
+                      <span className="text-blue-400 font-bold text-sm">ð Comparando pelo mesmo UPC:</span>
                       <code className="bg-blue-900/40 border border-blue-600/40 text-blue-200 text-sm font-mono px-3 py-1 rounded-lg font-extrabold tracking-wider">{p.upc}</code>
                     </div>
                     <div className="grid grid-cols-1 xl:grid-cols-5 gap-4">
                       <div className="xl:col-span-3 space-y-3">
                         {/* BUY CARD */}
                         <div className="rounded-xl border-2 border-emerald-500/50 bg-emerald-950/20 p-4">
-                          <p className="text-xs font-extrabold text-emerald-400 uppercase tracking-widest mb-3">🛒 Comprar em {p.store}</p>
+                          <p className="text-xs font-extrabold text-emerald-400 uppercase tracking-widest mb-3">ð Comprar em {p.store}</p>
                           <div className="flex gap-4 items-center">
                             <div className="w-20 h-20 rounded-xl overflow-hidden border border-slate-600 bg-slate-800 flex-shrink-0 flex items-center justify-center">
                               <Img src={p.img} alt={p.name} cls="w-20 h-20"/>
@@ -466,11 +466,11 @@ export default function ScannerPage() {
                                 <span className="text-sm text-slate-500 line-through">${p.orig}</span>
                                 <span className="text-sm text-red-400 font-bold">-{p.disc}%</span>
                               </div>
-                              <p className="text-xs text-slate-400 font-mono">{p.upc} · {p.weight} lbs</p>
+                              <p className="text-xs text-slate-400 font-mono">{p.upc} Â· {p.weight} lbs</p>
                             </div>
                             <a href={p.storeUrl} target="_blank" rel="noopener noreferrer"
                               className="flex-shrink-0 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition whitespace-nowrap">
-                              Ver em {p.store} →
+                              Ver em {p.store} â
                             </a>
                           </div>
                         </div>
@@ -493,7 +493,7 @@ export default function ScannerPage() {
                                   <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                                     <div className="flex items-center gap-2">
                                       <span className="text-sm font-extrabold text-white">{mktIcon[mk]} {mktLabel[mk]}</span>
-                                      {ib&&<span className="text-xs font-bold px-1.5 py-0.5 rounded-lg border bg-yellow-500/20 border-yellow-500/40 text-yellow-400">⭐ Melhor</span>}
+                                      {ib&&<span className="text-xs font-bold px-1.5 py-0.5 rounded-lg border bg-yellow-500/20 border-yellow-500/40 text-yellow-400">â­ Melhor</span>}
                                     </div>
                                     <span className="text-lg font-extrabold text-white">${mSrc.price.toFixed(2)}</span>
                                   </div>
@@ -519,7 +519,7 @@ export default function ScannerPage() {
                               </div>
                               <a href={mSrc.url} target="_blank" rel="noopener noreferrer"
                                 className={'mt-3 flex items-center justify-center w-full py-2.5 text-white text-xs font-bold rounded-xl transition '+mkBtn[mk]}>
-                                Ver em {mktLabel[mk]} →
+                                Ver em {mktLabel[mk]} â
                               </a>
                             </div>
                           );
@@ -527,7 +527,7 @@ export default function ScannerPage() {
                       </div>
                       <div className="xl:col-span-2 flex flex-col gap-3">
                         <div className="rounded-xl border border-yellow-500/30 bg-yellow-900/10 p-4">
-                          <p className="text-xs font-extrabold text-yellow-400 uppercase tracking-widest mb-3">⭐ Melhor Opção</p>
+                          <p className="text-xs font-extrabold text-yellow-400 uppercase tracking-widest mb-3">â­ Melhor OpÃ§Ã£o</p>
                           <div className="flex items-center gap-2 mb-3">
                             <span className="text-2xl">{mktIcon[bk]}</span>
                             <span className="text-lg font-extrabold text-white">{mktLabel[bk]}</span>
@@ -560,10 +560,10 @@ export default function ScannerPage() {
                           <div className="flex items-center justify-between mb-2">
                             <div>
                               <p className="font-bold text-white text-sm">{p.store}</p>
-                              <p className="text-xs text-slate-400">{p.avail} unidades disponíveis</p>
+                              <p className="text-xs text-slate-400">{p.avail} unidades disponÃ­veis</p>
                             </div>
                             <a href={p.mapUrl} target="_blank" rel="noopener noreferrer"
-                              className="text-xs px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg transition">📍 Mapa</a>
+                              className="text-xs px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg transition">ð Mapa</a>
                           </div>
                           <iframe src={'https://maps.google.com/maps?q='+encodeURIComponent(p.store+' near me')+'&output=embed'}
                             className="w-full rounded-xl" height="180" style={{border:0}} loading="lazy"/>
