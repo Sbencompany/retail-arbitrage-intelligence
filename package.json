@@ -1,0 +1,33 @@
+{
+  "name": "retail-arbitrage-intelligence",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\" --ignore-path .gitignore",
+    "db:generate": "turbo run db:generate --filter=@rai/database",
+    "db:migrate": "turbo run db:migrate --filter=@rai/database",
+    "db:seed": "turbo run db:seed --filter=@rai/database",
+    "db:reset": "cd packages/database && npx prisma migrate reset --force",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build",
+    "docker:prod": "docker-compose -f docker-compose.prod.yml up -d",
+    "setup": "npm install && npm run db:generate && npm run db:migrate && npm run db:seed"
+  },
+  "devDependencies": {
+    "turbo": "^2.1.0",
+    "prettier": "^3.2.5",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5"
+  },
+  "engines": { "node": ">=20.0.0", "npm": ">=10.0.0" }
+}
