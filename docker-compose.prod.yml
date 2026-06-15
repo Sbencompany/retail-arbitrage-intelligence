@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+  api:
+    image: ghcr.io/sbencompany/retail-arbitrage-intelligence/api:latest
+    restart: always
+    ports:
+      - "3001:3001"
+    env_file: .env.production
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - postgres
+      - redis
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3001/health/ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - rai_prod
+
+  web:
+    image: ghcr.io/sbencompany/retail-arbitrage-intelligence/web:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: https://api.yourdomain.com/v1
+      NODE_ENV: production
+    depends_on:
+      - api
+    networks:
+      - rai_prod
+
+  postgres:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: rai_user
+      POSTGRES_PASSWORD: CHANGE_THIS_PASSWORD
+      POSTGRES_DB: rai_db
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    networks:
+      - rai_prod
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    command: redis-server --requirepass CHANGE_REDIS_PASSWORD --maxmemory 1gb
+    volumes:
+      - redis_prod_data:/data
+    networks:
+      - rai_prod
+
+volumes:
+  postgres_prod_data:
+  redis_prod_data:
+
+networks:
+  rai_prod:
+    driver: bridge
