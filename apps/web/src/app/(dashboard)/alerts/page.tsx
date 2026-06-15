@@ -1,93 +1,27 @@
-'use client';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { alertsApi } from '@/lib/api';
-import { Bell, Check, CheckCheck } from 'lucide-react';
-import { toast } from 'sonner';
-import { formatDistanceToNow } from 'date-fns';
-
-const channelIcons: Record<string, string> = {
-  EMAIL: '📧', TELEGRAM: '💬', WHATSAPP: '📱', PUSH: '🔔', IN_APP: '🔔'
-};
-const typeColors: Record<string, string> = {
-  NEW_OPPORTUNITY: 'bg-blue-50 text-blue-700 border-blue-100',
-  PRICE_DROP: 'bg-green-50 text-green-700 border-green-100',
-  HIGH_ROI: 'bg-purple-50 text-purple-700 border-purple-100',
-  STOCK_LOW: 'bg-orange-50 text-orange-700 border-orange-100',
-  SYSTEM: 'bg-gray-50 text-gray-700 border-gray-100',
-};
-
+'use client'
+const alerts = [
+  { id: 1, type: 'success', title: 'Nova oportunidade detectada', message: 'Ninja Foodi Air Fryer - ROI 53.1%', time: '2 min atrás', read: false },
+  { id: 2, type: 'info', title: 'Preço atualizado', message: 'Sony WH-1000XM5 caiu para $199.99 na Best Buy', time: '15 min atrás', read: false },
+  { id: 3, type: 'warning', title: 'Concorrência aumentou', message: 'Apple AirPods Pro - 3 novos vendedores', time: '1h atrás', read: true },
+  { id: 4, type: 'success', title: 'Venda confirmada', message: 'KitchenAid Stand Mixer vendido por $379.00', time: '2h atrás', read: true },
+]
 export default function AlertsPage() {
-  const queryClient = useQueryClient();
-  const [page, setPage] = useState(1);
-
-  const { data, isLoading } = useQuery({
-    queryKey: ['alerts', page],
-    queryFn: () => alertsApi.list({ page, limit: 20 }).then((r: any) => r.data),
-    refetchInterval: 30000,
-  });
-
-  const markReadMutation = useMutation({
-    mutationFn: (id: string) => alertsApi.markRead(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['alerts'] }),
-  });
-
-  const markAllReadMutation = useMutation({
-    mutationFn: () => alertsApi.markAllRead(),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['alerts'] });
-      toast.success('All alerts marked as read');
-    },
-  });
-
-  const alerts = data?.data ?? [];
-  const unread = alerts.filter((a: any) => !a.isRead).length;
-
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Alerts</h1>
-          <p className="text-gray-500 text-sm">{unread} unread alerts</p>
-        </div>
-        {unread > 0 && (
-          <button onClick={() => markAllReadMutation.mutate()}
-            className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 font-medium">
-            <CheckCheck size={16} />
-            Mark all read
-          </button>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        {isLoading ? (
-          [...Array(5)].map((_, i) => <div key={i} className="skeleton h-20 rounded-xl" />)
-        ) : alerts.length === 0 ? (
-          <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-            <Bell size={40} className="text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500">No alerts yet</p>
-          </div>
-        ) : alerts.map((alert: any) => (
-          <div key={alert.id}
-            className={`bg-white rounded-xl border p-4 flex items-start gap-4 transition-all ${!alert.isRead ? 'border-blue-200 shadow-sm' : 'border-gray-200 opacity-75'}`}>
-            <div className={`px-2 py-1 rounded-lg border text-xs font-medium ${typeColors[alert.type] ?? 'bg-gray-50 text-gray-600 border-gray-100'}`}>
-              {channelIcons[alert.channel]} {alert.type?.replace('_', ' ')}
+    <div className="min-h-screen bg-slate-950 text-white p-6">
+      <div className="mb-6"><h1 className="text-2xl font-bold mb-2">🔔 Alertas</h1><p className="text-slate-400">Notificações em tempo real do sistema</p></div>
+      <div className="space-y-3 max-w-2xl">
+        {alerts.map(a => (
+          <div key={a.id} className={`p-4 rounded-xl border ${a.read ? 'bg-slate-900 border-slate-800' : 'bg-slate-800 border-blue-700/50'}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className={`font-medium ${a.read ? 'text-slate-400' : 'text-white'}`}>{a.title}</h3>
+                <p className="text-sm text-slate-400 mt-1">{a.message}</p>
+              </div>
+              <span className="text-xs text-slate-500">{a.time}</span>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 text-sm">{alert.title}</p>
-              <p className="text-gray-600 text-sm mt-0.5">{alert.message}</p>
-              <p className="text-xs text-gray-400 mt-1">
-                {formatDistanceToNow(new Date(alert.createdAt), { addSuffix: true })}
-              </p>
-            </div>
-            {!alert.isRead && (
-              <button onClick={() => markReadMutation.mutate(alert.id)}
-                className="shrink-0 p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                <Check size={16} />
-              </button>
-            )}
           </div>
         ))}
       </div>
     </div>
-  );
+  )
 }
