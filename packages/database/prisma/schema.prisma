@@ -1,0 +1,463 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String?
+  name          String
+  role          UserRole  @default(USER)
+  plan          PlanType  @default(FREE)
+  isActive      Boolean   @default(true)
+  emailVerified Boolean   @default(false)
+  avatarUrl     String?
+  timezone      String    @default("America/New_York")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  oauthAccounts OAuthAccount[]
+  sessions      Session[]
+  alerts        Alert[]
+  watchlists    Watchlist[]
+  scanJobs      ScanJob[]
+  notifications Notification[]
+  auditLogs     AuditLog[]
+  settings      UserSettings?
+  apiKeys       ApiKey[]
+  @@index([email])
+  @@map("users")
+}
+
+model UserSettings {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  minRoi                Float    @default(30)
+  minProfit             Float    @default(10)
+  maxBudget             Float    @default(1000)
+  preferredMarketplaces String[] @default(["AMAZON", "WALMART", "EBAY"])
+  alertEmail            Boolean  @default(true)
+  alertTelegram         Boolean  @default(false)
+  alertWhatsapp         Boolean  @default(false)
+  alertPush             Boolean  @default(true)
+  telegramChatId        String?
+  whatsappNumber        String?
+  homeZipCode           String?
+  homeLatitude          Float?
+  homeLongitude         Float?
+  searchRadiusMiles     Int      @default(25)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  @@map("user_settings")
+}
+
+model OAuthAccount {
+  id                String    @id @default(cuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider          String
+  providerAccountId String
+  accessToken       String?
+  refreshToken      String?
+  expiresAt         DateTime?
+  createdAt         DateTime  @default(now())
+  @@unique([provider, providerAccountId])
+  @@map("oauth_accounts")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  userAgent String?
+  ipAddress String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  @@index([token])
+  @@index([userId])
+  @@map("sessions")
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String
+  keyHash    String    @unique
+  keyPrefix  String
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
+  isActive   Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  @@map("api_keys")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  upc         String?  @unique
+  ean         String?
+  gtin        String?
+  asin        String?  @unique
+  isbn        String?
+  title       String
+  brand       String?
+  category    String?
+  subcategory String?
+  description String?
+  imageUrl    String?
+  imageUrls   String[] @default([])
+  weightLbs   Float?
+  lengthIn    Float?
+  widthIn     Float?
+  heightIn    Float?
+  modelNumber String?
+  partNumber  String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  retailListings      RetailListing[]
+  marketplaceListings MarketplaceListing[]
+  opportunities       Opportunity[]
+  watchlistItems      WatchlistItem[]
+  productMatchesSrc   ProductMatch[]       @relation("SourceProduct")
+  productMatchesDst   ProductMatch[]       @relation("MatchedProduct")
+  demandData          DemandData[]
+  priceHistory        PriceHistory[]
+  @@index([brand])
+  @@index([category])
+  @@index([gtin])
+  @@map("products")
+}
+
+model ProductMatch {
+  id               String    @id @default(cuid())
+  sourceProductId  String
+  sourceProduct    Product   @relation("SourceProduct", fields: [sourceProductId], references: [id])
+  matchedProductId String
+  matchedProduct   Product   @relation("MatchedProduct", fields: [matchedProductId], references: [id])
+  matchType        MatchType
+  confidenceScore  Float
+  matchedBy        String
+  verifiedAt       DateTime?
+  createdAt        DateTime  @default(now())
+  @@unique([sourceProductId, matchedProductId])
+  @@index([confidenceScore])
+  @@map("product_matches")
+}
+
+model RetailStore {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  website     String
+  logoUrl     String?
+  storeType   StoreType @default(BOTH)
+  country     String    @default("US")
+  isActive    Boolean   @default(true)
+  hasApi      Boolean   @default(false)
+  apiConfig   Json?
+  crawlConfig Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  storeLocations StoreLocation[]
+  retailListings RetailListing[]
+  scanJobs       ScanJob[]
+  @@map("retail_stores")
+}
+
+model StoreLocation {
+  id          String      @id @default(cuid())
+  storeId     String
+  store       RetailStore @relation(fields: [storeId], references: [id])
+  storeNumber String?
+  name        String?
+  address     String
+  city        String
+  state       String
+  zipCode     String
+  latitude    Float
+  longitude   Float
+  phone       String?
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  @@index([latitude, longitude])
+  @@index([zipCode])
+  @@map("store_locations")
+}
+
+model RetailListing {
+  id            String      @id @default(cuid())
+  productId     String
+  product       Product     @relation(fields: [productId], references: [id])
+  storeId       String
+  store         RetailStore @relation(fields: [storeId], references: [id])
+  storeSku      String?
+  url           String?
+  regularPrice  Float
+  salePrice     Float?
+  discount      Float?
+  inStock       Boolean     @default(true)
+  stockQuantity Int?
+  isOnSale      Boolean     @default(false)
+  saleStartDate DateTime?
+  saleEndDate   DateTime?
+  dealType      DealType?
+  locationIds   String[]    @default([])
+  lastCheckedAt DateTime    @default(now())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  @@index([productId])
+  @@index([storeId])
+  @@index([isOnSale])
+  @@map("retail_listings")
+}
+
+model MarketplaceListing {
+  id               String      @id @default(cuid())
+  productId        String
+  product          Product     @relation(fields: [productId], references: [id])
+  marketplace      Marketplace
+  marketplaceId    String
+  title            String
+  brand            String?
+  currentPrice     Float
+  newPrice         Float?
+  usedPrice        Float?
+  buyBoxPrice      Float?
+  buyBoxSellerId   String?
+  totalSellers     Int         @default(0)
+  fbaSellerCount   Int         @default(0)
+  fbmSellerCount   Int         @default(0)
+  rating           Float?
+  reviewCount      Int         @default(0)
+  isHazmat         Boolean     @default(false)
+  isRestricted     Boolean     @default(false)
+  category         String?
+  salesRank        Int?
+  salesRankCategory String?
+  imageUrl         String?
+  url              String?
+  lastUpdated      DateTime    @default(now())
+  createdAt        DateTime    @default(now())
+  feeCalculations FeeCalculation[]
+  priceHistory    PriceHistory[]
+  @@unique([marketplace, marketplaceId])
+  @@index([productId])
+  @@index([marketplace])
+  @@index([salesRank])
+  @@map("marketplace_listings")
+}
+
+model PriceHistory {
+  id                   String              @id @default(cuid())
+  productId            String?
+  product              Product?            @relation(fields: [productId], references: [id])
+  marketplaceListingId String?
+  marketplaceListing   MarketplaceListing? @relation(fields: [marketplaceListingId], references: [id])
+  price                Float
+  priceType            String
+  source               String
+  recordedAt           DateTime            @default(now())
+  @@index([productId, recordedAt])
+  @@index([marketplaceListingId, recordedAt])
+  @@map("price_history")
+}
+
+model FeeCalculation {
+  id                   String             @id @default(cuid())
+  marketplaceListingId String
+  marketplaceListing   MarketplaceListing @relation(fields: [marketplaceListingId], references: [id])
+  fulfillmentMethod    FulfillmentMethod
+  purchasePrice        Float
+  salePrice            Float
+  referralFee          Float              @default(0)
+  fulfillmentFee       Float              @default(0)
+  storageFee           Float              @default(0)
+  shippingCost         Float              @default(0)
+  packagingCost        Float              @default(0)
+  otherFees            Float              @default(0)
+  totalCost            Float
+  grossRevenue         Float
+  grossProfit          Float
+  netProfit            Float
+  roi                  Float
+  margin               Float
+  breakEvenPrice       Float
+  calculatedAt         DateTime           @default(now())
+  @@index([marketplaceListingId])
+  @@map("fee_calculations")
+}
+
+model DemandData {
+  id                    String           @id @default(cuid())
+  productId             String
+  product               Product          @relation(fields: [productId], references: [id])
+  marketplace           Marketplace
+  bsr                   Int?
+  bsrCategory           String?
+  estimatedMonthlySales Int?
+  soldLast30Days        Int?
+  sellThroughRate       Float?
+  demandScore           Float?
+  confidenceScore       Float?
+  competitionLevel      CompetitionLevel @default(MEDIUM)
+  recordedAt            DateTime         @default(now())
+  @@index([productId, marketplace])
+  @@index([demandScore])
+  @@map("demand_data")
+}
+
+model Opportunity {
+  id                  String            @id @default(cuid())
+  productId           String
+  product             Product           @relation(fields: [productId], references: [id])
+  retailStoreId       String?
+  retailStoreName     String
+  buyPrice            Float
+  sellPrice           Float
+  estimatedProfit     Float
+  estimatedRoi        Float
+  estimatedMargin     Float
+  demandScore         Float             @default(0)
+  competitionScore    Float             @default(0)
+  overallScore        Float             @default(0)
+  riskLevel           RiskLevel         @default(MEDIUM)
+  fulfillmentMethod   FulfillmentMethod @default(FBA)
+  targetMarketplace   Marketplace       @default(AMAZON)
+  recommendedQuantity Int               @default(1)
+  estimatedDaysToSell Int?
+  aiSummary           String?
+  aiRecommendation    AiRecommendation  @default(NEUTRAL)
+  status              OpportunityStatus @default(ACTIVE)
+  expiresAt           DateTime?
+  foundAt             DateTime          @default(now())
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  alerts Alert[]
+  @@index([overallScore])
+  @@index([estimatedRoi])
+  @@index([status])
+  @@index([targetMarketplace])
+  @@map("opportunities")
+}
+
+model Alert {
+  id            String       @id @default(cuid())
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  opportunityId String?
+  opportunity   Opportunity? @relation(fields: [opportunityId], references: [id])
+  type          AlertType
+  channel       AlertChannel
+  title         String
+  message       String
+  metadata      Json?
+  isSent        Boolean      @default(false)
+  sentAt        DateTime?
+  isRead        Boolean      @default(false)
+  readAt        DateTime?
+  createdAt     DateTime     @default(now())
+  @@index([userId, isRead])
+  @@index([isSent])
+  @@map("alerts")
+}
+
+model Watchlist {
+  id          String          @id @default(cuid())
+  userId      String
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  isDefault   Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  items WatchlistItem[]
+  @@index([userId])
+  @@map("watchlists")
+}
+
+model WatchlistItem {
+  id          String    @id @default(cuid())
+  watchlistId String
+  watchlist   Watchlist @relation(fields: [watchlistId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id])
+  targetPrice Float?
+  notes       String?
+  addedAt     DateTime  @default(now())
+  @@unique([watchlistId, productId])
+  @@map("watchlist_items")
+}
+
+model ScanJob {
+  id          String       @id @default(cuid())
+  userId      String?
+  user        User?        @relation(fields: [userId], references: [id])
+  storeId     String?
+  store       RetailStore? @relation(fields: [storeId], references: [id])
+  jobType     JobType
+  status      JobStatus    @default(PENDING)
+  config      Json?
+  result      Json?
+  error       String?
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime     @default(now())
+  @@index([status])
+  @@index([jobType])
+  @@map("scan_jobs")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String
+  isRead    Boolean  @default(false)
+  metadata  Json?
+  createdAt DateTime @default(now())
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  action     String
+  resource   String
+  resourceId String?
+  ipAddress  String?
+  userAgent  String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  @@index([userId])
+  @@index([action, resource])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+enum UserRole         { ADMIN USER ANALYST }
+enum PlanType         { FREE STARTER PRO ENTERPRISE }
+enum StoreType        { PHYSICAL ONLINE BOTH }
+enum Marketplace      { AMAZON WALMART EBAY ETSY }
+enum FulfillmentMethod { FBA FBM WALMART_WFS EBAY_STANDARD }
+enum OpportunityStatus { ACTIVE EXPIRED PURCHASED DISMISSED SOLD_OUT }
+enum AlertType        { NEW_OPPORTUNITY PRICE_DROP STOCK_LOW HIGH_ROI SYSTEM }
+enum AlertChannel     { EMAIL TELEGRAM WHATSAPP PUSH IN_APP }
+enum CompetitionLevel { VERY_LOW LOW MEDIUM HIGH VERY_HIGH }
+enum RiskLevel        { VERY_LOW LOW MEDIUM HIGH VERY_HIGH }
+enum DealType         { CLEARANCE SALE ROLLBACK SPECIAL_BUY WEEKLY_AD FLASH_SALE COUPON }
+enum MatchType        { EXACT_UPC EXACT_ASIN EXACT_EAN FUZZY_TITLE ML_PREDICTED MANUAL }
+enum JobType          { STORE_SCAN MARKETPLACE_SYNC OPPORTUNITY_ANALYSIS DEMAND_UPDATE PRICE_CHECK }
+enum JobStatus        { PENDING RUNNING COMPLETED FAILED CANCELLED }
+enum AiRecommendation { BUY STRONG_BUY HOLD AVOID NEUTRAL }
