@@ -2,9 +2,9 @@
 import { useState, useMemo } from 'react';
 
 const AMAZON_FEE = 0.15;
-const EBAY_FEE   = 0.136;
+const EBAY_FEE = 0.136;
 const EBAY_ORDER = 0.40;
-const WMART_FEE  = 0.08;
+const WMART_FEE = 0.08;
 
 function fbaFee(w: number): number {
   if (w <= 1) return 3.22; if (w <= 2) return 3.40; if (w <= 3) return 4.01;
@@ -32,8 +32,8 @@ function calcWalmart(buy: number, sell: number) {
 }
 function calcAll(buy: number, amzP: number, ebayP: number, wmP: number, w: number) {
   return {
-    amazon:  calcAmazon(buy, amzP, w),
-    ebay:    calcEbay(buy, ebayP),
+    amazon: calcAmazon(buy, amzP, w),
+    ebay: calcEbay(buy, ebayP),
     walmart: calcWalmart(buy, wmP),
   };
 }
@@ -54,8 +54,8 @@ const PRODUCTS = [
     mapUrl:'https://www.google.com/maps/search/Target+near+me',
     img:'https://target.scene7.com/is/image/Target/GUEST_c8ee953b-9466-44f3-83ee-fcaffe948466?wid=300&hei=300&qlt=80',
     amz:{ price:188.99, url:'https://www.amazon.com/dp/B0GGRXQ432', img:'https://m.media-amazon.com/images/I/617lzHhtCEL._AC_SX300_SY300_.jpg'},
-    ebay:{ price:165.00, url:'https://www.ebay.com/sch/i.html?_nkw=PowerXL+Vortex+Pro+027043003874', img:'https://m.media-amazon.com/images/I/617lzHhtCEL._AC_SX300_SY300_.jpg'},
-    wm:{ price:149.99, url:'https://www.walmart.com/search?q=PowerXL+Vortex+Pro+8qt', img:'https://m.media-amazon.com/images/I/617lzHhtCEL._AC_SX300_SY300_.jpg'},
+    ebay:{ price:165.00, url:'https://www.ebay.com/sch/i.html?_nkw=PowerXL+Vortex+Pro+8qt+027043003874', img:'https://m.media-amazon.com/images/I/617lzHhtCEL._AC_SX300_SY300_.jpg'},
+    wm:{ price:149.99, url:'https://www.walmart.com/search?q=PowerXL+Vortex+Pro+8qt+air+fryer', img:'https://m.media-amazon.com/images/I/617lzHhtCEL._AC_SX300_SY300_.jpg'},
   },
   { id:2, rank:2, name:'Instant Pot Rio 4qt Mini Multi-Cooker', brand:'Instant Pot',
     upc:'810028584124', category:'Kitchen', weight:7.2, monthly:6200,
@@ -65,67 +65,67 @@ const PRODUCTS = [
     img:'https://target.scene7.com/is/image/Target/GUEST_d3317263-7a1c-46e4-9067-8cadaac508b7?wid=300&hei=300&qlt=80',
     amz:{ price:89.99, url:'https://www.amazon.com/dp/B0F9B923NC', img:'https://m.media-amazon.com/images/I/71gkCf-Lo8L._AC_SX300_SY300_.jpg'},
     ebay:{ price:79.00, url:'https://www.ebay.com/sch/i.html?_nkw=Instant+Pot+Rio+4qt+810028584124', img:'https://m.media-amazon.com/images/I/71gkCf-Lo8L._AC_SX300_SY300_.jpg'},
-    wm:{ price:74.99, url:'https://www.walmart.com/search?q=Instant+Pot+Rio+4qt', img:'https://m.media-amazon.com/images/I/71gkCf-Lo8L._AC_SX300_SY300_.jpg'},
+    wm:{ price:74.99, url:'https://www.walmart.com/search?q=Instant+Pot+Rio+4qt+mini', img:'https://m.media-amazon.com/images/I/71gkCf-Lo8L._AC_SX300_SY300_.jpg'},
   },
-  { id:3, rank:3, name:'Ninja Crispi Pro AS101CY Air Fryer', brand:'Ninja',
+  { id:3, rank:3, name:'Ninja Crispi Pro 6-in-1 Glass Air Fryer AS101CY', brand:'Ninja',
     upc:'622356594806', category:'Kitchen', weight:9.8, monthly:5800,
     store:'Best Buy', buy:249.99, orig:299.99, disc:17, avail:623, badge:'Top Seller',
-    storeUrl:'https://www.bestbuy.com/site/ninja-crispi-pro-4-in-1-air-fry-system/6650389.p',
+    storeUrl:'https://www.bestbuy.com/site/ninja-crispi-pro-6-in-1-countertop-glass-air-fryer-cyberspace/6650389.p',
     mapUrl:'https://www.google.com/maps/search/Best+Buy+near+me',
     img:'https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6650/6650389_sd.jpg',
-    amz:{ price:289.99, url:'https://www.amazon.com/s?k=Ninja+Crispi+Pro+AS101+622356594806', img:'https://m.media-amazon.com/images/I/71YLKrqD1DL._AC_SX300_SY300_.jpg'},
-    ebay:{ price:265.00, url:'https://www.ebay.com/sch/i.html?_nkw=Ninja+Crispi+Pro+622356594806', img:'https://m.media-amazon.com/images/I/71YLKrqD1DL._AC_SX300_SY300_.jpg'},
-    wm:{ price:279.99, url:'https://www.walmart.com/search?q=Ninja+Crispi+Pro+AS101', img:'https://m.media-amazon.com/images/I/71YLKrqD1DL._AC_SX300_SY300_.jpg'},
+    amz:{ price:289.99, url:'https://www.amazon.com/s?k=Ninja+Crispi+Pro+AS101+air+fryer+system', img:'https://m.media-amazon.com/images/I/71YLKrqD1DL._AC_SX300_SY300_.jpg'},
+    ebay:{ price:249.00, url:'https://www.ebay.com/sch/i.html?_nkw=Ninja+Crispi+Pro+AS101+622356594806', img:'https://m.media-amazon.com/images/I/71YLKrqD1DL._AC_SX300_SY300_.jpg'},
+    wm:{ price:279.99, url:'https://www.walmart.com/search?q=Ninja+Crispi+Pro+AS101+air+fryer', img:'https://m.media-amazon.com/images/I/71YLKrqD1DL._AC_SX300_SY300_.jpg'},
   },
-  { id:4, rank:4, name:'DEWALT 20V MAX Drill+Impact Combo DCK240C2', brand:'DEWALT',
+  { id:4, rank:4, name:'DEWALT 20V MAX Drill Driver Set DCD771C2', brand:'DEWALT',
     upc:'885911417815', category:'Tools', weight:8.5, monthly:4900,
     store:'Home Depot', buy:99.00, orig:169.00, disc:41, avail:398, badge:'Pro Choice',
     storeUrl:'https://www.homedepot.com/p/DEWALT-20V-MAX-Cordless-Drill-Driver-Impact-Driver-Combo-Kit-DCK240C2/202591940',
     mapUrl:'https://www.google.com/maps/search/Home+Depot+near+me',
-    img:'https://images.thdstatic.com/productImages/bf9fc3cc-8a68-4a90-8611-d1c028c0f6e2/svn/dewalt-power-tool-combo-kits-dck240c2-64_600.jpg',
-    amz:{ price:169.00, url:'https://www.amazon.com/dp/B00DDXML7C', img:'https://m.media-amazon.com/images/I/71BKAZ-7S0L._AC_SX300_SY300_.jpg'},
-    ebay:{ price:155.00, url:'https://www.ebay.com/sch/i.html?_nkw=DEWALT+DCK240C2+885911417815', img:'https://m.media-amazon.com/images/I/71BKAZ-7S0L._AC_SX300_SY300_.jpg'},
-    wm:{ price:159.00, url:'https://www.walmart.com/search?q=DEWALT+DCK240C2', img:'https://m.media-amazon.com/images/I/71BKAZ-7S0L._AC_SX300_SY300_.jpg'},
+    img:'https://m.media-amazon.com/images/I/71BKAZ-7S0L._AC_SX300_SY300_.jpg',
+    amz:{ price:169.00, url:'https://www.amazon.com/dp/B00ET5VMTU', img:'https://m.media-amazon.com/images/I/71BKAZ-7S0L._AC_SX300_SY300_.jpg'},
+    ebay:{ price:145.00, url:'https://www.ebay.com/sch/i.html?_nkw=DEWALT+20V+MAX+drill+set+885911417815', img:'https://m.media-amazon.com/images/I/71BKAZ-7S0L._AC_SX300_SY300_.jpg'},
+    wm:{ price:149.99, url:'https://www.walmart.com/search?q=DEWALT+20V+MAX+drill+driver+set', img:'https://m.media-amazon.com/images/I/71BKAZ-7S0L._AC_SX300_SY300_.jpg'},
   },
   { id:5, rank:5, name:'Oral-B iO Series 4 Electric Toothbrush', brand:'Oral-B',
     upc:'069055134979', category:'Health', weight:1.8, monthly:4200,
     store:'Walgreens', buy:39.99, orig:79.99, disc:50, avail:1204, badge:'Flash Sale',
-    storeUrl:'https://www.walgreens.com/store/c/oral-b-io-series-4-electric-toothbrush/ID=prod6569782-product',
+    storeUrl:'https://www.walgreens.com/search/results.jsp?Ntt=Oral-B+iO+Series+4+toothbrush',
     mapUrl:'https://www.google.com/maps/search/Walgreens+near+me',
     img:'https://m.media-amazon.com/images/I/61HG6e2lG4L._AC_SX300_SY300_.jpg',
     amz:{ price:79.97, url:'https://www.amazon.com/dp/B08J4HMHTQ', img:'https://m.media-amazon.com/images/I/61HG6e2lG4L._AC_SX300_SY300_.jpg'},
-    ebay:{ price:69.00, url:'https://www.ebay.com/sch/i.html?_nkw=Oral-B+iO+Series+4+069055134979', img:'https://m.media-amazon.com/images/I/61HG6e2lG4L._AC_SX300_SY300_.jpg'},
-    wm:{ price:74.99, url:'https://www.walmart.com/search?q=Oral-B+iO+Series+4+toothbrush', img:'https://m.media-amazon.com/images/I/61HG6e2lG4L._AC_SX300_SY300_.jpg'},
+    ebay:{ price:65.00, url:'https://www.ebay.com/sch/i.html?_nkw=Oral-B+iO+Series+4+069055134979', img:'https://m.media-amazon.com/images/I/61HG6e2lG4L._AC_SX300_SY300_.jpg'},
+    wm:{ price:74.99, url:'https://www.walmart.com/search?q=Oral-B+iO+Series+4+electric+toothbrush', img:'https://m.media-amazon.com/images/I/61HG6e2lG4L._AC_SX300_SY300_.jpg'},
   },
   { id:6, rank:6, name:'Philips Sonicare ProtectiveClean 4100 HX6817', brand:'Philips',
     upc:'075020065148', category:'Health', weight:1.5, monthly:3800,
     store:'Costco', buy:44.99, orig:79.99, disc:44, avail:560, badge:'Member Deal',
-    storeUrl:'https://www.costco.com/catalogsearch/results?query=philips+sonicare+hx6817',
+    storeUrl:'https://www.costco.com/catalogsearch/results?query=philips+sonicare+4100',
     mapUrl:'https://www.google.com/maps/search/Costco+near+me',
     img:'https://m.media-amazon.com/images/I/61nVmrI0YXL._AC_SX300_SY300_.jpg',
     amz:{ price:79.96, url:'https://www.amazon.com/dp/B078GVDB19', img:'https://m.media-amazon.com/images/I/61nVmrI0YXL._AC_SX300_SY300_.jpg'},
-    ebay:{ price:69.99, url:'https://www.ebay.com/sch/i.html?_nkw=Philips+Sonicare+HX6817+075020065148', img:'https://m.media-amazon.com/images/I/61nVmrI0YXL._AC_SX300_SY300_.jpg'},
-    wm:{ price:74.99, url:'https://www.walmart.com/search?q=Philips+Sonicare+4100', img:'https://m.media-amazon.com/images/I/61nVmrI0YXL._AC_SX300_SY300_.jpg'},
+    ebay:{ price:65.00, url:'https://www.ebay.com/sch/i.html?_nkw=Philips+Sonicare+4100+HX6817+075020065148', img:'https://m.media-amazon.com/images/I/61nVmrI0YXL._AC_SX300_SY300_.jpg'},
+    wm:{ price:69.99, url:'https://www.walmart.com/search?q=Philips+Sonicare+4100+electric+toothbrush', img:'https://m.media-amazon.com/images/I/61nVmrI0YXL._AC_SX300_SY300_.jpg'},
   },
-  { id:7, rank:7, name:"KitchenAid 5-Speed Hand Mixer KHM512", brand:'KitchenAid',
+  { id:7, rank:7, name:'KitchenAid 5-Speed Hand Mixer KHM512', brand:'KitchenAid',
     upc:'883049274941', category:'Kitchen', weight:3.2, monthly:3200,
     store:"Kohl's", buy:39.99, orig:69.99, disc:43, avail:445, badge:'Clearance',
-    storeUrl:"https://www.kohls.com/catalog/search.jsp?search=KitchenAid+KHM512",
+    storeUrl:'https://www.kohls.com/catalog/search.jsp?search=KitchenAid+KHM512+hand+mixer',
     mapUrl:"https://www.google.com/maps/search/Kohl's+near+me",
     img:'https://m.media-amazon.com/images/I/61gbWkQPUhL._AC_SX300_SY300_.jpg',
     amz:{ price:69.99, url:'https://www.amazon.com/dp/B0000CFDVU', img:'https://m.media-amazon.com/images/I/61gbWkQPUhL._AC_SX300_SY300_.jpg'},
-    ebay:{ price:59.00, url:'https://www.ebay.com/sch/i.html?_nkw=KitchenAid+KHM512+883049274941', img:'https://m.media-amazon.com/images/I/61gbWkQPUhL._AC_SX300_SY300_.jpg'},
-    wm:{ price:64.99, url:'https://www.walmart.com/search?q=KitchenAid+hand+mixer+KHM512', img:'https://m.media-amazon.com/images/I/61gbWkQPUhL._AC_SX300_SY300_.jpg'},
+    ebay:{ price:55.00, url:'https://www.ebay.com/sch/i.html?_nkw=KitchenAid+KHM512+hand+mixer+883049274941', img:'https://m.media-amazon.com/images/I/61gbWkQPUhL._AC_SX300_SY300_.jpg'},
+    wm:{ price:62.99, url:'https://www.walmart.com/search?q=KitchenAid+5+speed+hand+mixer', img:'https://m.media-amazon.com/images/I/61gbWkQPUhL._AC_SX300_SY300_.jpg'},
   },
   { id:8, rank:8, name:'Shark Navigator Lift-Away NV352 Vacuum', brand:'Shark',
     upc:'622356543842', category:'Home', weight:12.5, monthly:2900,
     store:"Sam's Club", buy:89.99, orig:159.99, disc:44, avail:312, badge:'Member Savings',
-    storeUrl:"https://www.samsclub.com/search?searchTerm=Shark+Navigator+NV352",
+    storeUrl:'https://www.samsclub.com/search?searchTerm=Shark+Navigator+NV352+vacuum',
     mapUrl:"https://www.google.com/maps/search/Sam's+Club+near+me",
     img:'https://m.media-amazon.com/images/I/81h-gPBFWRL._AC_SX300_SY300_.jpg',
-    amz:{ price:159.99, url:'https://www.amazon.com/s?k=Shark+Navigator+NV352+622356543842', img:'https://m.media-amazon.com/images/I/81h-gPBFWRL._AC_SX300_SY300_.jpg'},
-    ebay:{ price:140.00, url:'https://www.ebay.com/sch/i.html?_nkw=Shark+Navigator+NV352+622356543842', img:'https://m.media-amazon.com/images/I/81h-gPBFWRL._AC_SX300_SY300_.jpg'},
-    wm:{ price:149.99, url:'https://www.walmart.com/search?q=Shark+Navigator+NV352', img:'https://m.media-amazon.com/images/I/81h-gPBFWRL._AC_SX300_SY300_.jpg'},
+    amz:{ price:159.99, url:'https://www.amazon.com/s?k=Shark+Navigator+NV352+Lift-Away+vacuum', img:'https://m.media-amazon.com/images/I/81h-gPBFWRL._AC_SX300_SY300_.jpg'},
+    ebay:{ price:129.99, url:'https://www.ebay.com/sch/i.html?_nkw=Shark+Navigator+NV352+622356543842', img:'https://m.media-amazon.com/images/I/81h-gPBFWRL._AC_SX300_SY300_.jpg'},
+    wm:{ price:149.99, url:'https://www.walmart.com/search?q=Shark+Navigator+NV352+vacuum', img:'https://m.media-amazon.com/images/I/81h-gPBFWRL._AC_SX300_SY300_.jpg'},
   },
   { id:9, rank:9, name:'Lodge Cast Iron Skillet 12-inch L10SK3', brand:'Lodge',
     upc:'079035061012', category:'Kitchen', weight:8.0, monthly:2400,
@@ -134,28 +134,28 @@ const PRODUCTS = [
     mapUrl:'https://www.google.com/maps/search/TJ+Maxx+near+me',
     img:'https://m.media-amazon.com/images/I/91fhHidBLrL._AC_SX300_SY300_.jpg',
     amz:{ price:49.90, url:'https://www.amazon.com/dp/B00006JSUA', img:'https://m.media-amazon.com/images/I/91fhHidBLrL._AC_SX300_SY300_.jpg'},
-    ebay:{ price:42.00, url:'https://www.ebay.com/sch/i.html?_nkw=Lodge+L10SK3+079035061012', img:'https://m.media-amazon.com/images/I/91fhHidBLrL._AC_SX300_SY300_.jpg'},
-    wm:{ price:44.99, url:'https://www.walmart.com/search?q=Lodge+cast+iron+12+inch', img:'https://m.media-amazon.com/images/I/91fhHidBLrL._AC_SX300_SY300_.jpg'},
+    ebay:{ price:38.00, url:'https://www.ebay.com/sch/i.html?_nkw=Lodge+L10SK3+cast+iron+12+079035061012', img:'https://m.media-amazon.com/images/I/91fhHidBLrL._AC_SX300_SY300_.jpg'},
+    wm:{ price:42.99, url:'https://www.walmart.com/search?q=Lodge+cast+iron+skillet+12+inch', img:'https://m.media-amazon.com/images/I/91fhHidBLrL._AC_SX300_SY300_.jpg'},
   },
   { id:10, rank:10, name:'Dyson V8 Cordless Vacuum SV10', brand:'Dyson',
     upc:'885609014948', category:'Home', weight:5.6, monthly:2600,
     store:'Best Buy', buy:199.99, orig:349.99, disc:43, avail:289, badge:'Deal of Day',
-    storeUrl:'https://www.bestbuy.com/site/searchpage.jsp?st=Dyson+V8+cordless',
+    storeUrl:'https://www.bestbuy.com/site/searchpage.jsp?st=Dyson+V8+cordless+vacuum',
     mapUrl:'https://www.google.com/maps/search/Best+Buy+near+me',
     img:'https://m.media-amazon.com/images/I/41gWVCfxqkL._AC_SX300_SY300_.jpg',
-    amz:{ price:349.00, url:'https://www.amazon.com/s?k=Dyson+V8+SV10+885609014948', img:'https://m.media-amazon.com/images/I/41gWVCfxqkL._AC_SX300_SY300_.jpg'},
-    ebay:{ price:299.00, url:'https://www.ebay.com/sch/i.html?_nkw=Dyson+V8+SV10+885609014948', img:'https://m.media-amazon.com/images/I/41gWVCfxqkL._AC_SX300_SY300_.jpg'},
-    wm:{ price:319.99, url:'https://www.walmart.com/search?q=Dyson+V8+cordless+vacuum', img:'https://m.media-amazon.com/images/I/41gWVCfxqkL._AC_SX300_SY300_.jpg'},
+    amz:{ price:349.00, url:'https://www.amazon.com/s?k=Dyson+V8+SV10+cordless+885609014948', img:'https://m.media-amazon.com/images/I/41gWVCfxqkL._AC_SX300_SY300_.jpg'},
+    ebay:{ price:279.00, url:'https://www.ebay.com/sch/i.html?_nkw=Dyson+V8+SV10+885609014948', img:'https://m.media-amazon.com/images/I/41gWVCfxqkL._AC_SX300_SY300_.jpg'},
+    wm:{ price:319.99, url:'https://www.walmart.com/search?q=Dyson+V8+cordless+vacuum+SV10', img:'https://m.media-amazon.com/images/I/41gWVCfxqkL._AC_SX300_SY300_.jpg'},
   },
-  { id:11, rank:11, name:'Ozark Trail 40oz Insulated Tumbler', brand:'Ozark Trail',
+  { id:11, rank:11, name:'Ozark Trail 40oz Stainless Insulated Tumbler', brand:'Ozark Trail',
     upc:'191554046023', category:'Outdoors', weight:1.2, monthly:2100,
     store:'Marshalls', buy:9.99, orig:24.99, disc:60, avail:921, badge:'Hot Deal',
     storeUrl:'https://www.marshalls.com/us/store/browse/search.jsp?searchKey=insulated+tumbler+40oz',
     mapUrl:'https://www.google.com/maps/search/Marshalls+near+me',
     img:'https://m.media-amazon.com/images/I/71dVEDIAcgL._AC_SX300_SY300_.jpg',
-    amz:{ price:24.99, url:'https://www.amazon.com/s?k=stainless+tumbler+40oz', img:'https://m.media-amazon.com/images/I/71dVEDIAcgL._AC_SX300_SY300_.jpg'},
-    ebay:{ price:21.00, url:'https://www.ebay.com/sch/i.html?_nkw=stainless+tumbler+40oz', img:'https://m.media-amazon.com/images/I/71dVEDIAcgL._AC_SX300_SY300_.jpg'},
-    wm:{ price:22.99, url:'https://www.walmart.com/search?q=Ozark+Trail+40oz+tumbler', img:'https://m.media-amazon.com/images/I/71dVEDIAcgL._AC_SX300_SY300_.jpg'},
+    amz:{ price:24.99, url:'https://www.amazon.com/s?k=stainless+insulated+tumbler+40oz', img:'https://m.media-amazon.com/images/I/71dVEDIAcgL._AC_SX300_SY300_.jpg'},
+    ebay:{ price:19.99, url:'https://www.ebay.com/sch/i.html?_nkw=stainless+tumbler+40oz+insulated', img:'https://m.media-amazon.com/images/I/71dVEDIAcgL._AC_SX300_SY300_.jpg'},
+    wm:{ price:21.99, url:'https://www.walmart.com/search?q=Ozark+Trail+40oz+insulated+tumbler', img:'https://m.media-amazon.com/images/I/71dVEDIAcgL._AC_SX300_SY300_.jpg'},
   },
   { id:12, rank:12, name:'Werner 6ft Fiberglass Step Ladder FS106', brand:'Werner',
     upc:'783222006027', category:'Tools', weight:22.0, monthly:1800,
@@ -163,11 +163,12 @@ const PRODUCTS = [
     storeUrl:'https://www.acehardware.com/departments/tools/ladders/step-ladders',
     mapUrl:'https://www.google.com/maps/search/Ace+Hardware+near+me',
     img:'https://m.media-amazon.com/images/I/71YwJsJQhHL._AC_SX300_SY300_.jpg',
-    amz:{ price:119.99, url:'https://www.amazon.com/dp/B001DCGVZW', img:'https://m.media-amazon.com/images/I/71YwJsJQhHL._AC_SX300_SY300_.jpg'},
-    ebay:{ price:105.00, url:'https://www.ebay.com/sch/i.html?_nkw=Werner+FS106+783222006027', img:'https://m.media-amazon.com/images/I/71YwJsJQhHL._AC_SX300_SY300_.jpg'},
-    wm:{ price:109.99, url:'https://www.walmart.com/search?q=Werner+6ft+fiberglass+ladder', img:'https://m.media-amazon.com/images/I/71YwJsJQhHL._AC_SX300_SY300_.jpg'},
+    amz:{ price:129.99, url:'https://www.amazon.com/s?k=Werner+6ft+fiberglass+step+ladder+FS106', img:'https://m.media-amazon.com/images/I/71YwJsJQhHL._AC_SX300_SY300_.jpg'},
+    ebay:{ price:109.99, url:'https://www.ebay.com/sch/i.html?_nkw=Werner+FS106+fiberglass+ladder+783222006027', img:'https://m.media-amazon.com/images/I/71YwJsJQhHL._AC_SX300_SY300_.jpg'},
+    wm:{ price:119.99, url:'https://www.walmart.com/search?q=Werner+6ft+fiberglass+step+ladder', img:'https://m.media-amazon.com/images/I/71YwJsJQhHL._AC_SX300_SY300_.jpg'},
   },
 ];
+
 const CATEGORIES = ['Todos','Kitchen','Tools','Health','Home','Outdoors'];
 const STORES = ['Todas','Target','Best Buy','Costco',"Kohl's",'Home Depot','Walgreens',"Sam's Club",'TJ Maxx','Marshalls','Ace Hardware'];
 
@@ -187,8 +188,12 @@ const BADGE: Record<string,string[]> = {
 
 function Img({src,alt,cls}:{src:string;alt:string;cls:string}) {
   const [e,setE] = useState(false);
-  if(e) return <div className={cls+' bg-slate-700 flex items-center justify-center rounded-xl'}><span className="text-xl">🖼️</span></div>;
-  return <img src={src} alt={alt} onError={()=>setE(true)} className={cls+' object-contain'}/>;
+  if(e) return (
+    <div className={cls+' bg-slate-700/50 flex items-center justify-center rounded-xl border border-slate-600'}>
+      <span className="text-2xl">📦</span>
+    </div>
+  );
+  return <img src={src} alt={alt} onError={()=>setE(true)} className={cls+' object-contain rounded-xl'}/>;
 }
 
 function ROIBar({roi,profit}:{roi:number;profit:number}) {
@@ -200,13 +205,14 @@ function ROIBar({roi,profit}:{roi:number;profit:number}) {
     </div>
   );
 }
+
 export default function ScannerPage() {
-  const [search,   setSearch]   = useState('');
+  const [search, setSearch] = useState('');
   const [category, setCategory] = useState('Todos');
-  const [store,    setStore]    = useState('Todas');
-  const [minDisc,  setMinDisc]  = useState(0);
-  const [minROI,   setMinROI]   = useState(0);
-  const [mkt,      setMkt]      = useState('amazon');
+  const [store, setStore] = useState('Todas');
+  const [minDisc, setMinDisc] = useState(0);
+  const [minROI, setMinROI] = useState(0);
+  const [mkt, setMkt] = useState('amazon');
   const [expanded, setExpanded] = useState<number|null>(null);
   const [scanning, setScanning] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -220,7 +226,8 @@ export default function ScannerPage() {
       if (p.disc < minDisc) return false;
       const bk = bestOf(p.buy, p.amz.price, p.ebay.price, p.wm.price, p.weight);
       const all = calcAll(p.buy, p.amz.price, p.ebay.price, p.wm.price, p.weight);
-      if ((all as any)[bk].roi < minROI) return false;
+      const roi = (all as Record<string,{roi:number;profit:number;fees:number}>)[bk].roi;
+      if (roi < minROI) return false;
       return true;
     });
   }, [search, category, store, minDisc, minROI]);
@@ -236,37 +243,37 @@ export default function ScannerPage() {
   const profitable = filtered.filter(p => {
     const bk = bestOf(p.buy, p.amz.price, p.ebay.price, p.wm.price, p.weight);
     const all = calcAll(p.buy, p.amz.price, p.ebay.price, p.wm.price, p.weight);
-    return (all as any)[bk].profit > 0;
+    return (all as Record<string,{roi:number;profit:number;fees:number}>)[bk].profit > 0;
   }).length;
 
   const avgROI = filtered.length ? Math.round(filtered.reduce((s,p)=>{
     const bk = bestOf(p.buy,p.amz.price,p.ebay.price,p.wm.price,p.weight);
     const all = calcAll(p.buy,p.amz.price,p.ebay.price,p.wm.price,p.weight);
-    return s + (all as any)[bk].roi;
+    return s + (all as Record<string,{roi:number;profit:number;fees:number}>)[bk].roi;
   },0)/filtered.length) : 0;
 
   const getMktData = (p: typeof PRODUCTS[0]) => {
     const all = calcAll(p.buy, p.amz.price, p.ebay.price, p.wm.price, p.weight);
     const src = mkt === 'amazon' ? p.amz : mkt === 'ebay' ? p.ebay : p.wm;
-    const calc = mkt === 'amazon' ? all.amazon : mkt === 'ebay' ? all.ebay : all.walmart;
+    const calc = (all as Record<string,{roi:number;profit:number;fees:number}>)[mkt === 'amazon' ? 'amazon' : mkt === 'ebay' ? 'ebay' : 'walmart'];
     return { src, calc };
   };
 
   const mktLabel: Record<string,string> = {amazon:'Amazon',ebay:'eBay',walmart:'Walmart Mkt'};
-  const mktIcon:  Record<string,string> = {amazon:'🟠',ebay:'🔴',walmart:'🔵'};
+  const mktIcon: Record<string,string>  = {amazon:'🟠',ebay:'🔴',walmart:'🔵'};
   const mkActiveCls: Record<string,string> = {
     amazon:'bg-orange-500/20 border-orange-400 text-orange-300',
-    ebay:'bg-red-500/20 border-red-400 text-red-300',
+    ebay:  'bg-red-500/20 border-red-400 text-red-300',
     walmart:'bg-blue-500/20 border-blue-400 text-blue-300',
   };
   const mkBorder: Record<string,string> = {
-    amazon:'border-orange-500/40 bg-orange-950/20',
-    ebay:'border-red-500/40 bg-red-950/20',
+    amazon: 'border-orange-500/40 bg-orange-950/20',
+    ebay:   'border-red-500/40 bg-red-950/20',
     walmart:'border-blue-500/40 bg-blue-950/20',
   };
   const mkBtn: Record<string,string> = {
-    amazon:'bg-orange-600 hover:bg-orange-500',
-    ebay:'bg-red-600 hover:bg-red-500',
+    amazon: 'bg-orange-600 hover:bg-orange-500',
+    ebay:   'bg-red-600 hover:bg-red-500',
     walmart:'bg-blue-600 hover:bg-blue-500',
   };
 
@@ -327,7 +334,7 @@ export default function ScannerPage() {
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-sm">🏷️</span>
               <select value={category} onChange={e=>setCategory(e.target.value)}
                 className="w-full appearance-none bg-slate-700 border border-slate-600 text-white rounded-xl pl-9 pr-7 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
-                {CATEGORIES.map((c: string)=><option key={c} value={c} style={{backgroundColor:'#1e293b'}}>{c}</option>)}
+                {CATEGORIES.map((c:string)=><option key={c} value={c} style={{backgroundColor:'#1e293b'}}>{c}</option>)}
               </select>
               <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs">▼</span>
             </div>
@@ -335,7 +342,7 @@ export default function ScannerPage() {
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-sm">🏪</span>
               <select value={store} onChange={e=>setStore(e.target.value)}
                 className="w-full appearance-none bg-slate-700 border border-slate-600 text-white rounded-xl pl-9 pr-7 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
-                {STORES.map((s: string)=><option key={s} value={s} style={{backgroundColor:'#1e293b'}}>{s}</option>)}
+                {STORES.map((s:string)=><option key={s} value={s} style={{backgroundColor:'#1e293b'}}>{s}</option>)}
               </select>
               <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs">▼</span>
             </div>
@@ -376,31 +383,33 @@ export default function ScannerPage() {
           ))}
           <span className="ml-auto text-slate-400 text-sm">{filtered.length} de {PRODUCTS.length} produtos</span>
         </div>
+
         {/* CARDS */}
         <div className="space-y-3">
           {filtered.length === 0 && (
             <div className="text-center py-20 bg-slate-800/40 rounded-2xl border border-slate-700">
               <div className="text-5xl mb-4">🔍</div>
               <p className="text-white font-bold text-lg">Nenhum produto encontrado</p>
-              <p className="text-slate-400 text-sm mt-1">Ajuste os filtros</p>
+              <p className="text-slate-400 text-sm mt-1">Ajuste os filtros para ver mais produtos</p>
             </div>
           )}
           {filtered.map(p => {
             const bk = bestOf(p.buy, p.amz.price, p.ebay.price, p.wm.price, p.weight);
             const allMkt = calcAll(p.buy, p.amz.price, p.ebay.price, p.wm.price, p.weight);
+            const allTyped = allMkt as Record<string,{roi:number;profit:number;fees:number}>;
             const { src: mktSrc, calc: mktCalc } = getMktData(p);
             const isE = expanded === p.id;
             const bdg = BADGE[p.badge] ?? ['bg-slate-600','text-white'];
             return (
               <div key={p.id} className={'rounded-2xl border overflow-hidden transition-all '+(isE?'border-blue-500/50 shadow-xl shadow-blue-900/20':'border-slate-700/50 hover:border-slate-600')}
                 style={{background: isE?'rgba(15,23,42,0.98)':'rgba(30,41,59,0.80)'}}>
-                {/* ROW */}
+                {/* CARD ROW */}
                 <div className="p-4 cursor-pointer select-none" onClick={()=>setExpanded(isE?null:p.id)}>
                   <div className="flex gap-4 items-center">
                     <div className="relative flex-shrink-0">
                       <div className="absolute -top-1 -left-1 z-10 w-6 h-6 bg-blue-600 text-white text-xs font-extrabold rounded-full flex items-center justify-center shadow">{p.rank}</div>
                       <div className="w-[72px] h-[72px] rounded-xl overflow-hidden border border-slate-600 bg-slate-800 flex items-center justify-center">
-                        <Img src={p.img} alt={p.name} cls="w-[72px] h-[72px] rounded-xl"/>
+                        <Img src={p.img} alt={p.name} cls="w-[72px] h-[72px]"/>
                       </div>
                       <div className="text-center mt-1 text-xs text-slate-400 font-medium">{p.store}</div>
                     </div>
@@ -422,97 +431,150 @@ export default function ScannerPage() {
                   </div>
                 </div>
 
-                {/* EXPANDED */}
+                {/* EXPANDED DETAIL */}
                 {isE && (
                   <div className="border-t border-slate-700 bg-slate-900/60 p-5">
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="text-slate-400 text-sm">🔍 Mesmo UPC:</span>
-                      <code className="bg-blue-900/30 border border-blue-700/40 text-blue-300 text-sm font-mono px-3 py-0.5 rounded-lg">{p.upc}</code>
+                    {/* UPC Header */}
+                    <div className="flex items-center gap-3 mb-5 p-3 bg-blue-900/20 border border-blue-700/30 rounded-xl">
+                      <span className="text-blue-400 font-bold text-sm">🔍 Comparando pelo mesmo UPC:</span>
+                      <code className="bg-blue-900/40 border border-blue-600/40 text-blue-200 text-sm font-mono px-3 py-1 rounded-lg font-extrabold tracking-wider">{p.upc}</code>
                     </div>
+
                     <div className="grid grid-cols-1 xl:grid-cols-5 gap-4">
-                      {/* LEFT col */}
+                      {/* LEFT: Buy card + Sell cards */}
                       <div className="xl:col-span-3 space-y-3">
-                        {/* BUY */}
-                        <div className="rounded-xl border-2 border-emerald-500/40 bg-emerald-950/20 p-3">
-                          <p className="text-xs font-extrabold text-emerald-400 uppercase tracking-widest mb-2">🛒 Comprar em {p.store}</p>
-                          <div className="flex gap-3 items-center">
-                            <div className="w-16 h-16 rounded-xl overflow-hidden border border-slate-700 bg-slate-800 flex-shrink-0 flex items-center justify-center">
-                              <Img src={p.img} alt={p.name} cls="w-16 h-16 rounded-xl"/>
+                        {/* BUY CARD */}
+                        <div className="rounded-xl border-2 border-emerald-500/50 bg-emerald-950/20 p-4">
+                          <p className="text-xs font-extrabold text-emerald-400 uppercase tracking-widest mb-3">🛒 Comprar em {p.store}</p>
+                          <div className="flex gap-4 items-center">
+                            <div className="w-20 h-20 rounded-xl overflow-hidden border border-slate-600 bg-slate-800 flex-shrink-0 flex items-center justify-center">
+                              <Img src={p.img} alt={p.name} cls="w-20 h-20"/>
                             </div>
                             <div className="flex-1">
-                              <div className="flex items-baseline gap-2">
+                              <p className="text-white font-bold text-sm mb-1">{p.name}</p>
+                              <div className="flex items-baseline gap-2 mb-1">
                                 <span className="text-2xl font-extrabold text-emerald-400">${p.buy}</span>
                                 <span className="text-sm text-slate-500 line-through">${p.orig}</span>
                                 <span className="text-sm text-red-400 font-bold">-{p.disc}%</span>
                               </div>
-                              <p className="text-xs text-slate-400">{p.upc} · {p.weight} lbs</p>
+                              <p className="text-xs text-slate-400 font-mono">{p.upc} · {p.weight} lbs</p>
                             </div>
-                            <a href={p.storeUrl} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition whitespace-nowrap">Ver Produto →</a>
+                            <a href={p.storeUrl} target="_blank" rel="noopener noreferrer"
+                              className="flex-shrink-0 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition whitespace-nowrap shadow-lg">
+                              Ver em {p.store} →
+                            </a>
                           </div>
                         </div>
-                        <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider pl-1">Vender em:</p>
+
+                        {/* SELL LABEL */}
+                        <div className="flex items-center gap-2 px-1">
+                          <div className="flex-1 h-px bg-slate-700"/>
+                          <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Vender nos Marketplaces</p>
+                          <div className="flex-1 h-px bg-slate-700"/>
+                        </div>
+
+                        {/* MARKETPLACE SELL CARDS */}
                         {(['amazon','ebay','walmart'] as const).map(mk => {
-                          const mc2 = mk==='amazon' ? allMkt.amazon : mk==='ebay' ? allMkt.ebay : allMkt.walmart;
+                          const mc2 = allTyped[mk === 'amazon' ? 'amazon' : mk === 'ebay' ? 'ebay' : 'walmart'];
                           const mSrc = mk==='amazon' ? p.amz : mk==='ebay' ? p.ebay : p.wm;
-                          const ib   = bk === mk;
+                          const ib = bk === mk;
                           return (
-                            <div key={mk} className={'rounded-xl border-2 p-3 '+(ib?mkBorder[mk]:'border-slate-700/40 bg-slate-800/30')}>
+                            <div key={mk} className={'rounded-xl border-2 p-4 transition '+(ib ? mkBorder[mk]+' shadow-lg' : 'border-slate-700/40 bg-slate-800/30')}>
                               <div className="flex items-start gap-3">
-                                <div className="w-14 h-14 rounded-xl overflow-hidden border border-slate-700 bg-slate-800 flex-shrink-0 flex items-center justify-center">
-                                  <Img src={mSrc.img} alt={p.name+' '+mk} cls="w-14 h-14 rounded-xl"/>
+                                {/* Product image - same UPC */}
+                                <div className="w-16 h-16 rounded-xl overflow-hidden border border-slate-600/50 bg-slate-800 flex-shrink-0 flex items-center justify-center">
+                                  <Img src={mSrc.img} alt={p.name} cls="w-16 h-16"/>
                                 </div>
-                                <div className="flex-1">
-                                  <div className="flex items-center justify-between mb-2">
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                                     <div className="flex items-center gap-2">
                                       <span className="text-sm font-extrabold text-white">{mktIcon[mk]} {mktLabel[mk]}</span>
-                                      {ib && <span className="text-xs font-bold px-1.5 py-0.5 rounded border bg-yellow-500/20 border-yellow-500/40 text-yellow-400">⭐ Melhor</span>}
+                                      {ib && <span className="text-xs font-bold px-1.5 py-0.5 rounded-lg border bg-yellow-500/20 border-yellow-500/40 text-yellow-400">⭐ Melhor</span>}
                                     </div>
-                                    <span className="text-base font-extrabold text-white">${mSrc.price}</span>
+                                    <span className="text-lg font-extrabold text-white">${mSrc.price.toFixed(2)}</span>
                                   </div>
+                                  {/* Fee breakdown grid */}
                                   <div className="grid grid-cols-4 gap-1 text-xs mb-2">
-                                    {([['Custo','$'+p.buy,'text-slate-300','bg-slate-800/80'],['Taxas','$'+mc2.fees.toFixed(2),'text-red-300','bg-slate-800/80'],['Lucro',(mc2.profit>=0?'+':'')+'$'+mc2.profit.toFixed(2),mc2.profit>0?'text-emerald-400':'text-red-400',mc2.profit>0?'bg-emerald-900/30':'bg-red-900/30'],['ROI',mc2.roi.toFixed(0)+'%',mc2.roi>0?'text-emerald-400':'text-red-400',mc2.roi>0?'bg-emerald-900/30':'bg-red-900/30']] as const).map(([lbl,val,vc,bg])=>(
+                                    {([
+                                      ['Custo','$'+p.buy.toFixed(2),'text-slate-300','bg-slate-800/80'],
+                                      ['Taxas','$'+mc2.fees.toFixed(2),'text-red-300','bg-slate-800/80'],
+                                      ['Lucro',(mc2.profit>=0?'+':'')+'$'+mc2.profit.toFixed(2),mc2.profit>0?'text-emerald-400':'text-red-400',mc2.profit>0?'bg-emerald-900/30':'bg-red-900/30'],
+                                      ['ROI',mc2.roi.toFixed(0)+'%',mc2.roi>0?'text-emerald-400':'text-red-400',mc2.roi>0?'bg-emerald-900/30':'bg-red-900/30'],
+                                    ] as const).map(([lbl,val,vc,bg])=>(
                                       <div key={lbl} className={'rounded-lg p-1.5 text-center '+bg}>
-                                        <div className="text-slate-500">{lbl}</div>
-                                        <div className={'font-extrabold '+vc}>{val}</div>
+                                        <div className="text-slate-500 text-xs">{lbl}</div>
+                                        <div className={'font-extrabold text-xs '+vc}>{val}</div>
                                       </div>
                                     ))}
                                   </div>
-                                  <p className="text-xs text-slate-500">
-                                    {mk==='amazon'&&('15% ref+FBA($'+fbaFee(p.weight).toFixed(2)+')+frete')}
-                                    {mk==='ebay'&&'13.6%+$0.40/pedido'}
-                                    {mk==='walmart'&&'8% referral'}
+                                  <p className="text-xs text-slate-500 italic">
+                                    {mk==='amazon' && ('Amazon: 15% ref + FBA $'+fbaFee(p.weight).toFixed(2)+' + frete $'+shipFee(p.weight).toFixed(2))}
+                                    {mk==='ebay'   && 'eBay: 13.6% final value fee + $0.40/pedido'}
+                                    {mk==='walmart' && 'Walmart Marketplace: 8% referral fee'}
                                   </p>
                                 </div>
                               </div>
                               <a href={mSrc.url} target="_blank" rel="noopener noreferrer"
-                                className={'mt-2.5 flex items-center justify-center w-full py-2 text-white text-xs font-bold rounded-xl transition '+mkBtn[mk]}>
+                                className={'mt-3 flex items-center justify-center w-full py-2.5 text-white text-xs font-bold rounded-xl transition shadow '+mkBtn[mk]}>
                                 Ver em {mktLabel[mk]} →
                               </a>
                             </div>
                           );
                         })}
                       </div>
-                      {/* RIGHT col */}
+
+                      {/* RIGHT: Best option + map */}
                       <div className="xl:col-span-2 flex flex-col gap-3">
+                        {/* BEST OPTION */}
                         <div className="rounded-xl border border-yellow-500/30 bg-yellow-900/10 p-4">
-                          <p className="text-xs font-extrabold text-yellow-400 uppercase tracking-widest mb-2">⭐ Melhor Opção</p>
-                          <p className="text-lg font-extrabold text-white mb-3">{mktIcon[bk]} {mktLabel[bk]}</p>
-                          {(()=>{const bc=bk==='amazon'?allMkt.amazon:bk==='ebay'?allMkt.ebay:allMkt.walmart; const bprice=bk==='amazon'?p.amz.price:bk==='ebay'?p.ebay.price:p.wm.price; return(
-                            <div className="space-y-2">
-                              <div className="flex justify-between"><span className="text-slate-400 text-sm">Lucro</span><span className="text-emerald-400 font-extrabold text-lg">+${bc.profit.toFixed(2)}</span></div>
-                              <div className="flex justify-between"><span className="text-slate-400 text-sm">ROI</span><span className="text-emerald-400 font-extrabold text-lg">{bc.roi.toFixed(0)}%</span></div>
-                              <div className="border-t border-slate-700 pt-2 flex justify-between text-xs text-slate-500">
-                                <span>Compra ${p.buy}</span><span>Vende ${bprice}</span>
+                          <p className="text-xs font-extrabold text-yellow-400 uppercase tracking-widest mb-3">⭐ Melhor Opção</p>
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="text-2xl">{mktIcon[bk]}</span>
+                            <span className="text-lg font-extrabold text-white">{mktLabel[bk]}</span>
+                          </div>
+                          {(()=>{
+                            const bc = allTyped[bk];
+                            const bprice = bk==='amazon' ? p.amz.price : bk==='ebay' ? p.ebay.price : p.wm.price;
+                            return (
+                              <div className="space-y-2">
+                                <div className="flex justify-between items-center py-1 border-b border-slate-700/50">
+                                  <span className="text-slate-400 text-sm">Lucro</span>
+                                  <span className={'font-extrabold text-lg '+(bc.profit>0?'text-emerald-400':'text-red-400')}>{bc.profit>=0?'+':''}${bc.profit.toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-1 border-b border-slate-700/50">
+                                  <span className="text-slate-400 text-sm">ROI</span>
+                                  <span className={'font-extrabold text-lg '+(bc.roi>0?'text-emerald-400':'text-red-400')}>{bc.roi.toFixed(0)}%</span>
+                                </div>
+                                <div className="flex justify-between items-center py-1 border-b border-slate-700/50">
+                                  <span className="text-slate-400 text-sm">Taxas</span>
+                                  <span className="font-bold text-red-300">${bc.fees.toFixed(2)}</span>
+                                </div>
+                                <div className="pt-1 flex justify-between text-xs text-slate-500">
+                                  <span>Compra ${p.buy.toFixed(2)}</span>
+                                  <span>Vende ${bprice.toFixed(2)}</span>
+                                </div>
                               </div>
-                            </div>
-                          );})()}
+                            );
+                          })()}
                         </div>
+
+                        {/* STORE MAP */}
                         <div className="rounded-xl border border-slate-700 bg-slate-800/30 p-3 flex-1">
                           <div className="flex items-center justify-between mb-2">
-                            <div><p className="font-bold text-white text-sm">{p.store}</p><p className="text-xs text-slate-400">{p.avail} unidades</p></div>
-                            <a href={p.mapUrl} target="_blank" rel="noopener noreferrer" className="text-xs px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg transition">📍 Mapa</a>
+                            <div>
+                              <p className="font-bold text-white text-sm">{p.store}</p>
+                              <p className="text-xs text-slate-400">{p.avail} unidades disponíveis</p>
+                            </div>
+                            <a href={p.mapUrl} target="_blank" rel="noopener noreferrer"
+                              className="text-xs px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg transition">📍 Mapa</a>
                           </div>
-                          <iframe src={'https://maps.google.com/maps?q='+encodeURIComponent(p.store+' near me')+'&output=embed'} className="w-full rounded-xl" height="200" style={{border:0}} loading="lazy"/>
+                          <iframe
+                            src={'https://maps.google.com/maps?q='+encodeURIComponent(p.store+' near me')+'&output=embed'}
+                            className="w-full rounded-xl"
+                            height="180"
+                            style={{border:0}}
+                            loading="lazy"
+                          />
                         </div>
                       </div>
                     </div>
